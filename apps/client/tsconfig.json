@@ -1,0 +1,11 @@
+{
+  "extends": "@repo/config-typescript/solid.json",
+  "compilerOptions": {
+    "types": ["vinxi/types/client"],
+    "paths": {
+      "~/*": ["./src/*"]
+    },
+  },
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

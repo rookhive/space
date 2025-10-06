@@ -1,0 +1,29 @@
+{
+  "name": "@repo/proto",
+  "main": "./dist/generated/signaling_pb.js",
+  "types": "./dist/generated/signaling_pb.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/generated/signaling_pb.js",
+      "types": "./dist/generated/signaling_pb.d.ts",
+      "default": "./dist/generated/signaling_pb.js"
+    },
+    "./generated/*": "./generated/*.ts"
+  },
+  "scripts": {
+    "build": "buf generate && tsc",
+    "dev": "nodemon --watch ./proto  --ext proto --exec \"buf generate && tsc\""
+  },
+  "peerDependencies": {
+    "@bufbuild/protobuf": "^2.5.2"
+  },
+  "dependencies": {
+    "@bufbuild/protobuf": "^2.7.0"
+  },
+  "devDependencies": {
+    "@bufbuild/buf": "^1.56.0",
+    "@bufbuild/protoc-gen-es": "^2.7.0",
+    "nodemon": "^3.1.10",
+    "typescript": "^5.9.2"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "name": "space-core",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx watch src/main.ts",
+    "start": "node dist/main.js"
+  },
+  "files": [
+    "dist",
+    "node_modules"
+  ],
+  "dependencies": {
+    "@colyseus/core": "^0.16.19",
+    "@repo/colyseus-schema": "workspace:*",
+    "@repo/constants": "workspace:*",
+    "@repo/nats-client": "workspace:*",
+    "@repo/proto": "workspace:*",
+    "@repo/room-physics": "workspace:*",
+    "@repo/typesystem": "workspace:*",
+    "@types/express": "^5.0.3",
+    "@types/node": "^24.3.0",
+    "colyseus": "^0.16.4",
+    "cookie": "^1.0.2",
+    "cookie-parser": "^1.4.7",
+    "dotenv": "^17.2.1",
+    "express": "^5.1.0",
+    "jose": "^6.0.13",
+    "zod": "^4.0.17"
+  },
+  "devDependencies": {
+    "@repo/config-typescript": "workspace:*",
+    "@types/cookie-parser": "^1.4.9",
+    "rimraf": "^6.0.1",
+    "tsx": "^4.20.4",
+    "typescript": "^5.9.2"
+  }
+}

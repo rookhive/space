@@ -1,0 +1,43 @@
+name: space
+
+services:
+  proxy:
+    image: space-proxy:latest
+    build:
+      context: ./nginx
+
+  client:
+    image: space-client:latest
+    build:
+      context: .
+      dockerfile: ./apps/client/Dockerfile
+      args:
+        NODE_VERSION: ${NODE_VERSION}
+        PNPM_VERSION: ${PNPM_VERSION}
+        TURBO_VERSION: ${TURBO_VERSION}
+        VITE_API_URL: ${VITE_API_URL}
+        VITE_CORE_URL: ${VITE_CORE_URL}
+        VITE_SFU_URL: ${VITE_SFU_URL}
+        VITE_REPOSITORY_URL: ${VITE_REPOSITORY_URL}
+
+  core:
+    image: space-core:latest
+    build:
+      context: .
+      dockerfile: ./apps/core/Dockerfile
+      args:
+        NODE_VERSION: ${NODE_VERSION}
+        PNPM_VERSION: ${PNPM_VERSION}
+        TURBO_VERSION: ${TURBO_VERSION}
+
+  sfu:
+    image: space-sfu:latest
+    build:
+      context: .
+      dockerfile: ./apps/sfu/Dockerfile
+      args:
+        NODE_VERSION: ${NODE_VERSION}
+        PNPM_VERSION: ${PNPM_VERSION}
+        TURBO_VERSION: ${TURBO_VERSION}
+        MEDIASOUP_MIN_PORT: ${MEDIASOUP_MIN_PORT}
+        MEDIASOUP_MAX_PORT: ${MEDIASOUP_MAX_PORT}

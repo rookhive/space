@@ -1,0 +1,22 @@
+{
+  "$schema": "https://turborepo.com/schema.json",
+  "ui": "tui",
+  "globalDependencies": [".env"],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build"],
+      "outputs": ["dist/**", ".vinxi/**", ".output/**", "build/**", "target/**", "generated/**"]
+    },
+    "start": {
+      "dependsOn": ["^start"]
+    },
+    "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "//#format-and-lint": {},
+    "//#format-and-lint:fix": {
+      "cache": false
+    }
+  }
+}

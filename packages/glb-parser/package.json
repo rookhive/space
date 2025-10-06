@@ -1,0 +1,19 @@
+{
+  "name": "@repo/glb-parser",
+  "scripts": {
+    "build": "tsx src/main.ts",
+    "dev": "tsx watch src/main.ts"
+  },
+  "devDependencies": {
+    "@repo/config-typescript": "workspace:*",
+    "@repo/typesystem": "workspace:*",
+    "@types/node": "^24.3.0",
+    "tsx": "^4.20.4",
+    "typescript": "^5.9.2"
+  },
+  "dependencies": {
+    "@gltf-transform/core": "^4.2.1",
+    "@gltf-transform/extensions": "^4.2.1",
+    "@gltf-transform/functions": "^4.2.1"
+  }
+}

@@ -1,0 +1,37 @@
+@import "tailwindcss";
+
+@config "../tailwind.config.ts";
+
+@theme {
+  --font-sans: Montserrat;
+  --font-heading: Jost;
+
+  --shadow-lg: 0 2px 10px rgba(0, 0, 0, 0.25);
+
+  --color-brand: #860a30;
+  --color-brand-light: #a03052;
+}
+
+::selection {
+  background-color: var(--color-brand-light);
+  color: white;
+}
+
+.gradient-background {
+  background:
+    repeating-linear-gradient(
+      90deg,
+      transparent 0,
+      transparent 40px,
+      rgba(255, 255, 255, 0.05) 40px,
+      rgba(255, 255, 255, 0.05) 80px
+    ), radial-gradient(circle at center, var(--color-brand) 0%, #000000 100%);
+}
+
+.glass-panel-surface {
+  @apply bg-white/5 shadow-lg backdrop-blur-lg;
+}
+
+.glass-panel {
+  @apply rounded-2xl bg-white/5 shadow-lg backdrop-blur-lg;
+}

@@ -1,0 +1,229 @@
+syntax = "proto3";
+
+import "google/protobuf/struct.proto";
+
+package signaling;
+
+service SignalingService {
+  rpc GetRtpCapabilities(GetRtpCapabilitiesRequest) returns (RtpCapabilities);
+  rpc CreateWebRtcTransport(CreateWebRtcTransportRequest) returns (CreateWebRtcTransportResponse);
+  rpc ConnectWebRtcTransport(ConnectWebRtcTransportRequest) returns (ConnectWebRtcTransportResponse);
+  rpc ProduceWebRtcTransport(ProduceWebRtcTransportRequest) returns (ProduceWebRtcTransportResponse);
+  rpc Consume(ConsumeRequest) returns (ConsumeResponse);
+  rpc ConsumeResume(ConsumeResumeRequest) returns (ConsumeResumeResponse);
+  rpc GetProducers(GetProducersRequest) returns (GetProducersResponse);
+  rpc PauseProducer(PauseProducerRequest) returns (PauseProducerResponse);
+  rpc ResumeProducer(ResumeProducerRequest) returns (ResumeProducerResponse);
+}
+
+/**
+* RTP Capabilities
+*/
+
+message GetRtpCapabilitiesRequest {}
+
+message RtpCapabilities {
+  repeated RtpCodecCapability codecs = 1;
+  repeated RtpHeaderExtension headerExtensions = 2;
+}
+
+message RtpCodecCapability {
+  string kind = 1;
+  string mimeType = 2;
+  uint32 preferredPayloadType = 3;
+  uint32 clockRate = 4;
+  optional uint32 channels = 5;
+  optional google.protobuf.Struct parameters = 6;
+  repeated RtcpFeedback rtcpFeedback = 7;
+}
+
+message RtcpFeedback {
+  string type = 1;
+  optional string parameter = 2;
+}
+
+message RtpHeaderExtension {
+  string kind = 1;
+  string uri = 2;
+  uint32 preferredId = 3;
+  optional bool preferredEncrypt = 4;
+  optional string direction = 5;
+}
+
+/**
+ * WebRTC transport
+ */
+
+message CreateWebRtcTransportRequest {
+  bool isProducer = 1;
+}
+
+message CreateWebRtcTransportResponse {
+  string id = 1;
+  IceParameters iceParameters = 2;
+  DtlsParameters dtlsParameters = 3;
+  repeated IceCandidate iceCandidates = 4;
+}
+
+message IceParameters {
+  string usernameFragment = 1;
+  string password = 2;
+  optional bool iceLite = 3;
+}
+
+message IceCandidate {
+  string foundation = 1;
+  uint32 priority = 2;
+  string ip = 3;
+  string address = 4;
+  string protocol = 5;
+  uint32 port = 6;
+  string type = 7;
+  optional string tspType = 8;
+}
+
+message DtlsParameters {
+  optional string role = 1;
+  repeated DtlsFingerprint fingerprints = 2;
+}
+
+message DtlsFingerprint {
+  string algorithm = 1;
+  string value = 2;
+}
+
+/**
+ * Connect WebRTC transport
+ */
+
+message ConnectWebRtcTransportRequest {
+  string transportId = 1;
+  bool isProducer = 2;
+  DtlsParameters dtlsParameters = 3;
+}
+
+message ConnectWebRtcTransportResponse {}
+
+/**
+ * Produce WebRTC transport
+ */
+
+message ProduceWebRtcTransportRequest {
+  string kind = 1;
+  RtpParameters rtpParameters = 2;
+}
+
+message ProduceWebRtcTransportResponse {
+  string producerId = 1;
+}
+
+message RtpParameters {
+  optional string mid = 1;
+  repeated RtpCodecParameters codecs = 2;
+  RtcpParameters rtcp = 3;
+  repeated RtpEncodingParameters encodings = 4;
+  repeated RtpHeaderExtensionParameters headerExtensions = 5;
+}
+
+message RtpCodecParameters {
+  string mimeType = 1;
+  uint32 payloadType = 2;
+  uint32 clockRate = 3;
+  optional uint32 channels = 4;
+  optional google.protobuf.Struct parameters = 5;
+  repeated RtcpFeedback rtcpFeedback = 6;
+}
+
+message RtpHeaderExtensionParameters {
+  string uri = 1;
+  uint32 id = 2;
+  optional bool encrypt = 3;
+  optional google.protobuf.Struct parameters = 4;
+}
+
+message Rtx {
+  uint32 ssrc = 1;
+}
+
+message RtpEncodingParameters {
+  optional uint32 ssrc = 1;
+  optional string rid = 2;
+  optional uint32 codecPayloadType = 3;
+  optional Rtx rtx = 4;
+  optional bool dtx = 5;
+  optional string scalabilityMode = 6;
+  optional uint32 scaleResolutionDownBy = 7;
+  optional uint32 maxBitrate = 8;
+  optional uint32 maxFramerate = 9;
+  optional bool adaptivePtime = 10;
+  optional string priority = 11;
+  optional string networkPriority = 12;
+}
+
+message RtcpParameters {
+  optional string cname = 1;
+  optional bool  reducedSize = 2;
+  optional bool mux = 3;
+}
+
+/**
+ * Consume media tracks
+ */
+
+message ConsumeRequest {
+  string producerId = 1;
+  string transportId = 2;
+  RtpCapabilities rtpCapabilities = 3;
+}
+
+message ConsumeResponse {
+  string kind = 1;
+  string consumerId = 2;
+  string producerId = 3;
+  RtpParameters rtpParameters = 4;
+}
+
+/**
+ * Resume consuming media tracks
+ */
+
+message ConsumeResumeRequest {
+  string consumerId = 1;
+}
+
+message ConsumeResumeResponse {}
+
+/**
+ * Get producers of a particular room
+ */
+
+message GetProducersRequest {}
+
+message GetProducersResponse {
+  repeated ProducerInfo producers = 1;
+}
+
+message ProducerInfo {
+  string userId = 1;
+  string producerId = 2;
+}
+
+/**
+ * Pause a producer
+ */
+
+message PauseProducerRequest {
+  string kind = 1;
+}
+
+message PauseProducerResponse {}
+
+/**
+ * Resume a producer
+ */
+
+message ResumeProducerRequest {
+  string kind = 1;
+}
+
+message ResumeProducerResponse {}

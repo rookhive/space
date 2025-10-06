@@ -1,0 +1,110 @@
+name: space
+
+services:
+  proxy:
+    image: space-proxy:latest
+    restart: unless-stopped
+    environment:
+      CLIENT_PORT: ${CLIENT_PORT}
+      CORE_PORT: ${CORE_PORT}
+      SFU_PORT: ${SFU_PORT}
+      DOMAIN_NAME: ${DOMAIN_NAME}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - client
+      - core
+      - sfu
+    networks:
+      - space-network
+
+  redis:
+    image: redis:8.0.2
+    restart: always
+    ports:
+      - "6379:6379"
+    networks:
+      - space-network
+
+  nats:
+    image: nats:2.11.6
+    restart: always
+    ports:
+      - "4222:4222"
+    networks:
+      - space-network
+
+  client:
+    image: space-client:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      HOST: ${CLIENT_HOST}
+      PORT: ${CLIENT_PORT}
+      NATS_URL: ${NATS_URL}
+      REDIS_URL: ${REDIS_URL}
+      LOGIN_SESSION_SECRET: ${LOGIN_SESSION_SECRET}
+      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
+      ACCESS_TOKEN_EXPIRATION: ${ACCESS_TOKEN_EXPIRATION}
+      REFRESH_TOKEN_SECRET: ${REFRESH_TOKEN_SECRET}
+      REFRESH_TOKEN_EXPIRATION: ${REFRESH_TOKEN_EXPIRATION}
+      GOOGLE_OAUTH_CLIENT_ID: ${GOOGLE_OAUTH_CLIENT_ID}
+      GOOGLE_OAUTH_CLIENT_SECRET: ${GOOGLE_OAUTH_CLIENT_SECRET}
+      GOOGLE_OAUTH_SERVER_URL: ${GOOGLE_OAUTH_SERVER_URL}
+      GOOGLE_OAUTH_REDIRECT_URL: ${GOOGLE_OAUTH_REDIRECT_URL}
+    expose:
+      - "3333"
+    depends_on:
+      - sfu
+      - core
+      - redis
+      - nats
+    networks:
+      - space-network
+
+  core:
+    image: space-core:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      HOST: ${CORE_HOST}
+      PORT: ${CORE_PORT}
+      NATS_URL: ${NATS_URL}
+      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
+    expose:
+      - "3334"
+    depends_on:
+      - nats
+    networks:
+      - space-network
+
+  sfu:
+    image: space-sfu:latest
+    restart: unless-stopped
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      HOST: ${SFU_HOST}
+      PORT: ${SFU_PORT}
+      NATS_URL: ${NATS_URL}
+      CLIENT_URL: ${CLIENT_URL}
+      MEDIASOUP_ANNOUNCED_IP: ${MEDIASOUP_ANNOUNCED_IP}
+      MEDIASOUP_WORKERS: ${MEDIASOUP_WORKERS}
+      MEDIASOUP_MIN_PORT: ${MEDIASOUP_MIN_PORT}
+      MEDIASOUP_MAX_PORT: ${MEDIASOUP_MAX_PORT}
+      ACCESS_TOKEN_SECRET: ${ACCESS_TOKEN_SECRET}
+    ports:
+      - ${SFU_PORT}
+      - ${MEDIASOUP_MIN_PORT}-${MEDIASOUP_MAX_PORT}:${MEDIASOUP_MIN_PORT}-${MEDIASOUP_MAX_PORT}/udp
+      - ${MEDIASOUP_MIN_PORT}-${MEDIASOUP_MAX_PORT}:${MEDIASOUP_MIN_PORT}-${MEDIASOUP_MAX_PORT}/tcp
+    depends_on:
+      - core
+      - nats
+    networks:
+      - space-network
+
+networks:
+  space-network:
+    driver: bridge

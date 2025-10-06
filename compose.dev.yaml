@@ -1,0 +1,15 @@
+name: space-dev
+
+services:
+
+  redis:
+    image: redis:8.0.2
+    restart: always
+    ports:
+      - "6379:6379"
+
+  nats:
+    image: nats:2.11.6
+    restart: always
+    ports:
+      - "4222:4222"

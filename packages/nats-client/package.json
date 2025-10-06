@@ -1,0 +1,25 @@
+{
+  "name": "@repo/nats-client",
+  "type": "module",
+  "main": "dist/main.js",
+  "types": "dist/main.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/main.d.ts",
+      "import": "./dist/main.js",
+      "default": "./dist/main.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch"
+  },
+  "dependencies": {
+    "nats": "^2.29.3"
+  },
+  "devDependencies": {
+    "@repo/config-typescript": "workspace:*",
+    "@repo/typesystem": "workspace:*",
+    "typescript": "^5.9.2"
+  }
+}

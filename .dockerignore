@@ -1,0 +1,13 @@
+**/.dockerignore
+**/.git
+**/.gitignore
+**/.vscode
+**/.turbo
+**/.cache
+**/.vinxi
+**/.output
+**/docker-compose*.y*ml
+**/Dockerfile*
+**/node_modules
+**/build
+**/dist

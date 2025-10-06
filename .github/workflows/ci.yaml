@@ -1,0 +1,149 @@
+name: Deploy to VPS
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: self-hosted
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          set-safe-directory: false
+          clean: false
+
+      - name: Write build environment variables
+        run: |
+          @'
+          NODE_ENV=production
+          NODE_VERSION=24
+          PNPM_VERSION=10.17.1
+          TURBO_VERSION=2.5.8
+          CLIENT_HOST=0.0.0.0
+          CLIENT_PORT=3333
+          CORE_HOST=0.0.0.0
+          CORE_PORT=3334
+          SFU_HOST=0.0.0.0
+          SFU_PORT=3335
+          NATS_URL=nats://nats:4222
+          REDIS_URL=redis://redis:6379
+          MEDIASOUP_MIN_PORT=10000
+          MEDIASOUP_MAX_PORT=10099
+          ACCESS_TOKEN_EXPIRATION=30m
+          REFRESH_TOKEN_EXPIRATION=30d
+          GOOGLE_OAUTH_SERVER_URL=https://accounts.google.com
+          DOMAIN_NAME=${{ secrets.DOMAIN_NAME }}
+          CLIENT_URL=${{ secrets.CLIENT_URL }}
+          LOGIN_SESSION_SECRET=${{ secrets.LOGIN_SESSION_SECRET }}
+          ACCESS_TOKEN_SECRET=${{ secrets.ACCESS_TOKEN_SECRET }}
+          REFRESH_TOKEN_SECRET=${{ secrets.REFRESH_TOKEN_SECRET }}
+          GOOGLE_OAUTH_CLIENT_ID=${{ secrets.GOOGLE_OAUTH_CLIENT_ID }}
+          GOOGLE_OAUTH_CLIENT_SECRET=${{ secrets.GOOGLE_OAUTH_CLIENT_SECRET }}
+          GOOGLE_OAUTH_REDIRECT_URL=${{ secrets.GOOGLE_OAUTH_REDIRECT_URL }}
+          MEDIASOUP_ANNOUNCED_IP=${{ secrets.MEDIASOUP_ANNOUNCED_IP }}
+          VITE_API_URL=${{ secrets.API_URL }}
+          VITE_CORE_URL=${{ secrets.CORE_URL }}
+          VITE_SFU_URL=${{ secrets.SFU_URL }}
+          VITE_REPOSITORY_URL=https://github.com/rookhive/space
+          '@ | Set-Content -Path .env -Encoding utf8
+
+      - name: Build images
+        run: make build
+
+      - name: Export images
+        run: |
+          $images = @(
+            'space-proxy:latest'
+            'space-client:latest'
+            'space-sfu:latest'
+            'space-core:latest'
+          )
+          foreach ($image in $images) {
+            $archiveName = $image -replace '[:/]', '__'
+            $tarPath = "$archiveName.tar"
+            $archivePath = "$archiveName.tar.gz"
+
+            docker save $image -o $tarPath
+
+            $input = [System.IO.File]::OpenRead($tarPath)
+            $output = [System.IO.File]::Create($archivePath)
+            try {
+              $gzip = New-Object System.IO.Compression.GzipStream($output, [System.IO.Compression.CompressionMode]::Compress)
+              try {
+                $input.CopyTo($gzip)
+              } finally {
+                $gzip.Dispose()
+              }
+            } finally {
+              $input.Dispose()
+              $output.Dispose()
+            }
+
+            Remove-Item $tarPath
+          }
+
+      - name: Upload images to VPS and restart the containers
+        env:
+          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+
+          $deployUser = '${{ secrets.DEPLOY_USER }}'
+          $deployHost = '${{ secrets.DEPLOY_HOST }}'
+
+          $sshDir = Join-Path $env:RUNNER_TEMP ("ssh_" + [guid]::NewGuid().ToString("N"))
+          $null = New-Item -ItemType Directory -Path $sshDir -Force
+
+          $keyPath = Join-Path $sshDir 'id_rsa'
+          $sshKey = $env:SSH_KEY -replace "`r",""
+          [System.IO.File]::WriteAllText($keyPath, $sshKey, [System.Text.Encoding]::ASCII)
+
+          icacls $keyPath /inheritance:r /grant:r "$($env:USERNAME):(R)" > $null
+
+          $scpOptions = @('-i', $keyPath, '-o', 'StrictHostKeyChecking=no')
+
+          ssh @scpOptions "$deployUser@$deployHost" 'mkdir -p /opt/space'
+
+          foreach ($file in @('compose.yaml', '.env')) {
+            scp @scpOptions $file "$deployUser@${deployHost}:/opt/space/$file"
+          }
+
+          $archives = @(
+            'space-proxy__latest.tar.gz'
+            'space-client__latest.tar.gz'
+            'space-core__latest.tar.gz'
+            'space-sfu__latest.tar.gz'
+          )
+
+          foreach ($archive in $archives) {
+            scp @scpOptions $archive "$deployUser@${deployHost}:/tmp/"
+          }
+
+          $remoteScript = @'
+            set -euo pipefail
+            cd /opt/space
+            archives=(
+              space-proxy__latest.tar.gz
+              space-client__latest.tar.gz
+              space-core__latest.tar.gz
+              space-sfu__latest.tar.gz
+            )
+            for archive in "${archives[@]}"; do
+              gunzip -c /tmp/$archive | docker load
+              rm /tmp/$archive
+            done
+            docker compose up -d --remove-orphans
+            docker image prune -af
+          '@
+
+          $remoteScript = $remoteScript -replace "`r`n", "`n"
+
+          $localScriptPath = Join-Path $env:RUNNER_TEMP ("deploy-" + [guid]::NewGuid().ToString("N") + ".sh")
+          [System.IO.File]::WriteAllText($localScriptPath, $remoteScript, [System.Text.Encoding]::UTF8)
+
+          $remoteScriptPath = "/tmp/space-deploy.sh"
+          scp @scpOptions $localScriptPath "$deployUser@${deployHost}:$remoteScriptPath"
+
+          ssh @scpOptions "$deployUser@${deployHost}" "bash $remoteScriptPath && rm -f $remoteScriptPath"
+          Remove-Item $localScriptPath -Force

@@ -1,0 +1,5 @@
+{
+  "extends": "@repo/config-typescript/solid.json",
+  "include": ["src"],
+  "exclude": ["node_modules"]
+}

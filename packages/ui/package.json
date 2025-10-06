@@ -1,0 +1,18 @@
+{
+  "name": "@repo/ui",
+  "exports": {
+    "./avatar": "./src/components/Avatar.tsx",
+    "./button": "./src/components/Button.tsx",
+    "./icon": "./src/components/Icon.tsx",
+    "./input": "./src/components/Input.tsx",
+    "./mute-button": "./src/components/MuteButton.tsx",
+    "./select": "./src/components/Select.tsx",
+    "./spinner": "./src/components/Spinner.tsx"
+  },
+  "dependencies": {
+    "@repo/config-typescript": "workspace:*",
+    "clsx": "^2.1.1",
+    "solid-js": "^1.9.9",
+    "solid-motionone": "^1.0.4"
+  }
+}
