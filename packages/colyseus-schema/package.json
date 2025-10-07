@@ -16,9 +16,9 @@
   },
   "devDependencies": {
     "@repo/config-typescript": "workspace:*",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   },
   "dependencies": {
-    "@colyseus/schema": "^3.0.55"
+    "@colyseus/schema": "^3.0.62"
   }
 }

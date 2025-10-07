@@ -7,9 +7,9 @@
   "devDependencies": {
     "@repo/config-typescript": "workspace:*",
     "@repo/typesystem": "workspace:*",
-    "@types/node": "^24.3.0",
-    "tsx": "^4.20.4",
-    "typescript": "^5.9.2"
+    "@types/node": "^24.7.0",
+    "tsx": "^4.20.6",
+    "typescript": "^5.9.3"
   },
   "dependencies": {
     "@gltf-transform/core": "^4.2.1",

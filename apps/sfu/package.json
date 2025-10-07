@@ -10,9 +10,9 @@
     "node_modules"
   ],
   "dependencies": {
-    "@connectrpc/connect": "^2.0.4",
-    "@connectrpc/connect-fastify": "^2.0.4",
-    "@connectrpc/connect-node": "^2.0.4",
+    "@connectrpc/connect": "^2.1.0",
+    "@connectrpc/connect-fastify": "^2.1.0",
+    "@connectrpc/connect-node": "^2.1.0",
     "@fastify/cookie": "^11.0.2",
     "@fastify/cors": "^11.1.0",
     "@nestjs/common": "^11.1.6",
@@ -25,24 +25,24 @@
     "@repo/proto": "workspace:*",
     "@repo/typesystem": "workspace:*",
     "cookie": "^1.0.2",
-    "dotenv": "^17.2.1",
+    "dotenv": "^17.2.3",
     "mediasoup": "3.19.3",
     "nats": "^2.29.3",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2",
-    "zod": "^4.0.17"
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.10",
-    "@nestjs/schematics": "^11.0.7",
+    "@nestjs/schematics": "^11.0.8",
     "@repo/config-typescript": "workspace:*",
     "@swc/cli": "^0.7.8",
-    "@swc/core": "^1.13.4",
-    "@types/node": "^24.3.0",
+    "@swc/core": "^1.13.5",
+    "@types/node": "^24.7.0",
     "source-map-support": "^0.5.21",
-    "ts-loader": "^9.5.2",
+    "ts-loader": "^9.5.4",
     "ts-node": "^10.9.2",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.9.2"
+    "typescript": "^5.9.3"
   }
 }
