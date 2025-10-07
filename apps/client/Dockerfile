@@ -30,9 +30,11 @@ COPY --from=installer /install .
 ARG VITE_API_URL
 ARG VITE_CORE_URL
 ARG VITE_SFU_URL
+ARG VITE_REPOSITORY_URL
 ENV VITE_API_URL=${VITE_API_URL}
 ENV VITE_CORE_URL=${VITE_CORE_URL}
 ENV VITE_SFU_URL=${VITE_SFU_URL}
+ENV VITE_REPOSITORY_URL=${VITE_REPOSITORY_URL}
 RUN pnpm build --filter space-client
 RUN pnpm deploy --filter space-client --prod --legacy /prod
 
