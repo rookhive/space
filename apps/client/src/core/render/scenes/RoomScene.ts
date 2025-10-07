@@ -192,8 +192,8 @@ export class RoomScene extends Disposable {
   }
 
   #setupLight() {
-    const pointLight = new PointLight(0xffffff, 100, 400);
-    pointLight.position.set(20, 10, 20);
+    const pointLight = new PointLight(0xffffff, 150);
+    pointLight.position.set(0, 25, 0);
     pointLight.castShadow = true;
     this.#scene.add(pointLight);
   }
