@@ -140,7 +140,7 @@ jobs:
           $remoteScript = $remoteScript -replace "`r`n", "`n"
 
           $localScriptPath = Join-Path $env:RUNNER_TEMP ("deploy-" + [guid]::NewGuid().ToString("N") + ".sh")
-          [System.IO.File]::WriteAllText($localScriptPath, $remoteScript, [System.Text.Encoding]::UTF8)
+          [System.IO.File]::WriteAllText($localScriptPath, $remoteScript, New-Object System.Text.UTF8Encoding $false)
 
           $remoteScriptPath = "/tmp/space-deploy.sh"
           scp @scpOptions $localScriptPath "$deployUser@${deployHost}:$remoteScriptPath"
