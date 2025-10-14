@@ -3,13 +3,16 @@ import { createAsync, type RouteSectionProps, useParams } from '@solidjs/router'
 import { Show } from 'solid-js';
 import { Logo } from '~/components/Logo';
 import { LogoutButton } from '~/components/LogoutButton';
+import { NotSupportedDeviceMessage } from '~/components/NotSupportedDeviceMessage';
 import { SourceCodeButton } from '~/components/SourceCodeButton';
 import { UserContext } from '~/hooks/use-user';
 import { getAuthorizedUser } from '~/lib/auth/get-authorized-user';
+import { isDesktop } from '~/utils/viewport';
 
 export default function AppLayout(props: RouteSectionProps) {
   const user = createAsync(() => getAuthorizedUser(), { deferStream: true });
   const params = useParams();
+  const isAppropriateDevice = isDesktop();
 
   return (
     <UserContext.Provider value={() => user()!}>
@@ -24,7 +27,11 @@ export default function AppLayout(props: RouteSectionProps) {
             </div>
           </Show>
         </header>
-        <main class="flex w-full grow">{props.children}</main>
+        <main class="flex w-full grow">
+          <Show when={isAppropriateDevice} fallback={<NotSupportedDeviceMessage />}>
+            {props.children}
+          </Show>
+        </main>
       </div>
     </UserContext.Provider>
   );
