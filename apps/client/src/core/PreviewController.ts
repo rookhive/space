@@ -14,11 +14,11 @@ export class PreviewController {
   }
 
   startLoop() {
-    const loop = () => {
+    const loop = (timestamp: number) => {
       this.#graphicsRAFTimer = requestAnimationFrame(loop);
-      this.#graphicsStep();
+      this.#graphicsStep(timestamp);
     };
-    loop();
+    this.#graphicsRAFTimer = requestAnimationFrame(loop);
   }
 
   setAudioTrack(track: MediaStreamTrack) {
@@ -41,7 +41,7 @@ export class PreviewController {
     this.#scene.setUserColor(color);
   }
 
-  #graphicsStep() {
-    this.#scene.step();
+  #graphicsStep(timestamp: number) {
+    this.#scene.step(timestamp);
   }
 }

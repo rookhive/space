@@ -7,13 +7,13 @@
   "devDependencies": {
     "@repo/config-typescript": "workspace:*",
     "@repo/typesystem": "workspace:*",
-    "@types/node": "^24.7.0",
-    "tsx": "^4.20.6",
-    "typescript": "^5.9.3"
+    "@types/node": "^25.5.0",
+    "tsx": "^4.21.0",
+    "typescript": "^6.0.2"
   },
   "dependencies": {
-    "@gltf-transform/core": "^4.2.1",
-    "@gltf-transform/extensions": "^4.2.1",
-    "@gltf-transform/functions": "^4.2.1"
+    "@gltf-transform/core": "^4.3.0",
+    "@gltf-transform/extensions": "^4.3.0",
+    "@gltf-transform/functions": "^4.3.0"
   }
 }

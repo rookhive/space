@@ -1,6 +1,6 @@
+import { getStateCallbacks, type Room } from '@colyseus/sdk';
 import { CHAT_MESSAGE_NAME, SERVER_TICK_RATE, USER_INPUT_MESSAGE_NAME } from '@repo/constants';
 import type { ChatMessage, User, UserData, UserID } from '@repo/typesystem';
-import { getStateCallbacks, type Room } from 'colyseus.js';
 import type { MediaKind } from 'mediasoup-client/types';
 import { env } from '~/env/client';
 import type { RoomDevices } from '~/types';
@@ -205,21 +205,21 @@ export class VideoRoomController {
   }
 
   #startGraphicsLoop() {
-    const loop = () => {
+    const loop = (timestamp: number) => {
       this.#graphicsRAFTimer = requestAnimationFrame(loop);
-      this.#graphicsStep();
+      this.#graphicsStep(timestamp);
     };
-    loop();
+    this.#graphicsRAFTimer = requestAnimationFrame(loop);
   }
 
   #startPhysicsLoop() {
     this.#physicsLoopTimer = setInterval(this.#physicsStep.bind(this), 1000 / SERVER_TICK_RATE);
   }
 
-  #graphicsStep() {
+  #graphicsStep(timestamp: number) {
     const mouseInput = this.#mouseController.getCurrentInput();
     this.#scene.updateCameraRotation(mouseInput.yaw, mouseInput.pitch);
-    this.#scene.step();
+    this.#scene.step(timestamp);
   }
 
   #physicsStep() {

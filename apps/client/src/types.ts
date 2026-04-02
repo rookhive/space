@@ -1,5 +1,5 @@
+import type { Room } from '@colyseus/sdk';
 import type { VideoRoomState } from '@repo/colyseus-schema';
-import type { Room } from 'colyseus.js';
 
 export type DeviceID = string;
 

@@ -1,5 +1,5 @@
 import type { Schema } from '@colyseus/schema';
-import { Client, ErrorCode, MatchMakeError, type Room } from 'colyseus.js';
+import { Client, ErrorCode, MatchMakeError, type Room } from '@colyseus/sdk';
 import { httpClient } from '~/core/HttpClient';
 import { env } from '~/env/client';
 

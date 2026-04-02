@@ -33,7 +33,7 @@ natsClient.subscribe(REVOKED_SESSION_EVENT_NAME, (payload: { userId: UserID }) =
   } catch {}
 });
 
-export class VideoRoom extends Room<VideoRoomState> {
+export class VideoRoom extends Room<{ state: VideoRoomState }> {
   state = new VideoRoomState();
   patchRate = 1000 / SERVER_TICK_RATE;
   maxClients = VIDEO_ROOM_MAX_USER_COUNT;
@@ -44,7 +44,7 @@ export class VideoRoom extends Room<VideoRoomState> {
 
   static async onAuth(_token: string, _options: unknown, context: AuthContext) {
     try {
-      const cookieHeader = context.headers.cookie;
+      const cookieHeader = context.headers.get('cookie');
       if (!cookieHeader) throw new ServerError(ErrorCode.AUTH_FAILED, 'MISSING_COOKIE');
       const accessToken = parseCookie(cookieHeader)[ACCESS_TOKEN_COOKIE_NAME];
       if (!accessToken) throw new ServerError(ErrorCode.AUTH_FAILED, 'MISSING_ACCESS_TOKEN');
@@ -53,6 +53,7 @@ export class VideoRoom extends Room<VideoRoomState> {
         throw new ServerError(ErrorCode.MATCHMAKE_INVALID_CRITERIA, 'USER_ALREADY_IN_ROOM');
       return userData;
     } catch (error: unknown) {
+      console.error(error);
       if (error instanceof ServerError) throw error;
       return false;
     }

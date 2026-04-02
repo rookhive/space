@@ -1,6 +1,5 @@
 import { TV_HEIGHT, USER_FLOATING_HEIGHT, USER_RADIUS } from '@repo/constants';
 import {
-  Clock,
   Color,
   FrontSide,
   Mesh,
@@ -9,6 +8,7 @@ import {
   PlaneGeometry,
   PointLight,
   Scene,
+  Timer,
   WebGLRenderer,
 } from 'three';
 import { OrbitControls } from 'three-stdlib';
@@ -22,7 +22,7 @@ export class PreviewScene extends Disposable {
   readonly #camera: PerspectiveCamera;
   readonly #renderer: WebGLRenderer;
   readonly #controls: OrbitControls;
-  readonly #clock!: Clock;
+  readonly #timer!: Timer;
   readonly #user: User;
   readonly #screen: Screen;
   readonly #userYPosition = USER_FLOATING_HEIGHT + USER_RADIUS;
@@ -30,7 +30,8 @@ export class PreviewScene extends Disposable {
   constructor(container: HTMLDivElement) {
     super();
     this.#container = container;
-    this.#clock = new Clock();
+    this.#timer = new Timer();
+    this.#timer.connect(document);
     this.#scene = new Scene();
     this.#camera = this.#createCamera();
     this.#renderer = this.#createRenderer();
@@ -60,11 +61,12 @@ export class PreviewScene extends Disposable {
       }
     });
     this.#controls.dispose();
-    this.#clock.stop();
+    this.#timer.dispose();
   }
 
-  step() {
-    const elapsedTime = this.#clock.getElapsedTime();
+  step(timestamp: number) {
+    this.#timer.update(timestamp);
+    const elapsedTime = this.#timer.getElapsed();
     this.#user.step(elapsedTime);
     this.#stepUserBounce(elapsedTime);
     this.#screen.step();

@@ -3,11 +3,11 @@ import roomModelUrl from '@repo/glb-parser/dist/room.visual.glb?url';
 import type { UserID, Vec3 } from '@repo/typesystem';
 import {
   AudioListener,
-  Clock,
-  PCFSoftShadowMap,
+  PCFShadowMap,
   PerspectiveCamera,
   PointLight,
   Scene,
+  Timer,
   WebGLRenderer,
 } from 'three';
 import { GLTFLoader } from 'three-stdlib';
@@ -21,7 +21,7 @@ export class RoomScene extends Disposable {
   readonly #renderer!: WebGLRenderer;
   readonly #scene!: Scene;
   readonly #camera!: PerspectiveCamera;
-  readonly #clock!: Clock;
+  readonly #timer!: Timer;
   readonly #audioListener!: AudioListener;
   readonly #screens: Array<Screen> = [];
   readonly #users: Map<UserID, User> = new Map();
@@ -32,7 +32,8 @@ export class RoomScene extends Disposable {
   constructor(container: HTMLDivElement) {
     super();
     this.#container = container;
-    this.#clock = new Clock();
+    this.#timer = new Timer();
+    this.#timer.connect(document);
     this.#scene = new Scene();
     this.#audioListener = this.#setupAudioListener();
     this.#camera = this.#setupCamera();
@@ -49,6 +50,7 @@ export class RoomScene extends Disposable {
     super.dispose();
     this.#screens.forEach((screen) => screen.dispose());
     this.#users.forEach((user) => user.dispose());
+    this.#timer.dispose();
   }
 
   ready() {
@@ -65,8 +67,10 @@ export class RoomScene extends Disposable {
     this.#camera.rotation.x = pitch;
   }
 
-  step() {
-    this.#users.forEach((user) => user.step(this.#clock.getElapsedTime()));
+  step(timestamp: number) {
+    this.#timer.update(timestamp);
+    const elapsedTime = this.#timer.getElapsed();
+    this.#users.forEach((user) => user.step(elapsedTime));
     this.#screens.forEach((screen) => screen.step());
     this.#renderer.render(this.#scene, this.#camera);
   }
@@ -164,7 +168,7 @@ export class RoomScene extends Disposable {
     renderer.setSize(this.#container.clientWidth, this.#container.clientHeight);
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = PCFSoftShadowMap;
+    renderer.shadowMap.type = PCFShadowMap;
     this.#container.appendChild(renderer.domElement);
     return renderer;
   }

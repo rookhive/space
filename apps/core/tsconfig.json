@@ -2,6 +2,7 @@
   "extends": "@repo/config-typescript/node.json",
   "compilerOptions": {
     "outDir": "dist",
+    "rootDir": "src",
     "target": "esnext",
     "module": "nodenext",
     "moduleResolution": "nodenext"

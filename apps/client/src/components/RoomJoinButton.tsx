@@ -1,9 +1,9 @@
+import type { Room } from '@colyseus/sdk';
 import type { VideoRoomState } from '@repo/colyseus-schema';
 import { VIDEO_ROOM_NAME } from '@repo/constants';
 import type { RoomJoinOptions } from '@repo/typesystem';
 import { Button } from '@repo/ui/button';
 import { useParams } from '@solidjs/router';
-import type { Room } from 'colyseus.js';
 import { createSignal } from 'solid-js';
 import { colyseusClient } from '~/core/ColyseusClient';
 import { preferencesStore } from '~/stores/preferences-store';
@@ -26,7 +26,7 @@ export function RoomJoinButton(props: Props) {
   }
 
   function handleJoinRoom() {
-    return colyseusClient.joinRoom<VideoRoomState, RoomJoinOptions>(params.roomId, {
+    return colyseusClient.joinRoom<VideoRoomState, RoomJoinOptions>(params.roomId!, {
       userColor: preferences.color,
     });
   }
