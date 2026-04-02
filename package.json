@@ -2,6 +2,7 @@
   "name": "space",
   "private": true,
   "license": "MIT",
+  "version": "0.1.0",
   "author": "Kirill Samoilov <rookhive@gmail.com>",
   "scripts": {
     "dev": "turbo run dev --concurrency 20",
