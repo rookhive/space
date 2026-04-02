@@ -38,7 +38,7 @@
     "@repo/config-typescript": "workspace:*",
     "@swc/cli": "^0.8.1",
     "@swc/core": "^1.15.21",
-    "@types/node": "^25.5.0",
+    "@types/node": "^24",
     "source-map-support": "^0.5.21",
     "ts-loader": "^9.5.4",
     "ts-node": "^10.9.2",

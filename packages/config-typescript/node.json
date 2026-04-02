@@ -2,8 +2,8 @@
   "extends": "./base.json",
   "compilerOptions": {
     "target": "esnext",
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "nodenext",
+    "moduleResolution": "nodenext",
     "experimentalDecorators": true,
     "useDefineForClassFields": false
   }

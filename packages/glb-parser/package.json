@@ -7,7 +7,7 @@
   "devDependencies": {
     "@repo/config-typescript": "workspace:*",
     "@repo/typesystem": "workspace:*",
-    "@types/node": "^25.5.0",
+    "@types/node": "^24",
     "tsx": "^4.21.0",
     "typescript": "^6.0.2"
   },

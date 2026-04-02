@@ -19,7 +19,7 @@
     "@repo/room-physics": "workspace:*",
     "@repo/typesystem": "workspace:*",
     "@types/express": "^5.0.6",
-    "@types/node": "^25.5.0",
+    "@types/node": "^24",
     "colyseus": "^0.17.8",
     "cookie": "^1.1.1",
     "cookie-parser": "^1.4.7",
