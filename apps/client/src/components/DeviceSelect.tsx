@@ -31,7 +31,7 @@ export function DeviceSelect(props: Props) {
         <Presence>
           <Show when={!isPermissionGranted()}>
             <Motion.div
-              class="-top-1 absolute right-0.5 z-2"
+              class="absolute -top-1 right-0.5 z-2"
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
@@ -48,7 +48,7 @@ export function DeviceSelect(props: Props) {
           onToggle={props.onDeviceMute}
         />
       </div>
-      <div class="relative flex h-[50px] w-[190px] grow items-center self-stretch">
+      <div class="relative flex h-12.5 w-47.5 grow items-center self-stretch">
         <Presence exitBeforeEnter>
           <Switch
             fallback={

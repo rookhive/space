@@ -77,7 +77,7 @@ export function Input(props: Props) {
         iconId={props.iconId || 'send'}
         noStyle
         class={clsx(
-          'relative z-2 w-[50px] shrink-0 rounded-l-none shadow-lg duration-200 ease-out group-hover:bg-white/2.5!',
+          'relative z-2 w-12.5 shrink-0 rounded-l-none shadow-lg duration-200 ease-out group-hover:bg-white/2.5!',
           isFocused() && 'bg-white/2.5'
         )}
       />

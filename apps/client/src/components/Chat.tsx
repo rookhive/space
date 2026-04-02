@@ -35,7 +35,7 @@ export function Chat(props: Props) {
   }
 
   return (
-    <div class="flex min-h-0 min-w-0 max-w-[800px] grow flex-col">
+    <div class="flex min-h-0 min-w-0 max-w-200 grow flex-col">
       <div
         ref={chatContainer}
         class="flex grow flex-col overflow-x-hidden overflow-y-scroll pb-3"

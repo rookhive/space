@@ -66,7 +66,7 @@ export function Select<ID extends string, T extends string | number | null | und
         <span class="grow truncate">{selectedItem()?.value}</span>
         <Icon
           class={clsx(
-            'w-[50px] shrink-0 origin-center transition-transform duration-300 ease-in-out',
+            'w-12.5 shrink-0 origin-center transition-transform duration-300 ease-in-out',
             isOpen() && 'rotate-180'
           )}
           id="down"
@@ -78,7 +78,7 @@ export function Select<ID extends string, T extends string | number | null | und
           {isOpen() && (
             <Motion.ul
               ref={(node) => (dropdownRef = node)}
-              class="glass-panel fixed max-w-[400px] overflow-y-auto py-3"
+              class="glass-panel fixed max-w-100 overflow-y-auto py-3"
               style={dropdownStyle()}
               initial={{ opacity: 0, transform: 'translateY(-20px)' }}
               animate={{ opacity: 1, transform: 'translateY(0)' }}
@@ -91,8 +91,8 @@ export function Select<ID extends string, T extends string | number | null | und
                   return (
                     <li
                       class={clsx(
-                        'relative select-none before:pointer-events-none before:absolute before:top-[6px] before:bottom-[6px] before:left-[6px] before:w-[4px] before:rounded-xs before:transition-all before:duration-200 before:content-[""]',
-                        isSelected() && 'before:bg-[var(--color-brand)]!'
+                        'relative select-none before:pointer-events-none before:absolute before:top-1.5 before:bottom-1.5 before:left-1.5 before:w-1 before:rounded-xs before:transition-all before:duration-200 before:content-[""]',
+                        isSelected() && 'before:bg-brand!'
                       )}
                     >
                       <button

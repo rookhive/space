@@ -27,20 +27,20 @@ export function Button(initialProps: Props) {
     <button
       {...props}
       class={clsx(
-        'h-[50px] rounded-2xl',
+        'h-12.5 rounded-2xl',
         props.class,
         'relative',
         props.isLoading && 'pointer-events-none'
       )}
     >
       {props.variant === 'pulse' && (
-        <span class="-translate-1/2 absolute top-1/2 left-1/2 z-1 h-full w-full animate-pulse rounded-[inherit] bg-[var(--color-brand)]" />
+        <span class="-translate-1/2 absolute top-1/2 left-1/2 z-1 h-full w-full animate-pulse rounded-[inherit] bg-brand" />
       )}
       <div
         class={clsx(
-          'relative z-2 flex h-full cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-[inherit] px-5 py-3 text-white outline-0 transition-all duration-200 ease-out hover:bg-white/10! [&>*]:transition-opacity [&>*]:duration-200',
+          'relative z-2 flex h-full cursor-pointer items-center justify-center gap-2 whitespace-nowrap rounded-[inherit] px-5 py-3 text-white outline-0 transition-all duration-200 ease-out *:transition-opacity *:duration-200 hover:bg-white/10!',
           !props.noStyle && 'glass-panel-surface',
-          props.isLoading && 'cursor-default! [&>*]:opacity-0'
+          props.isLoading && 'cursor-default! *:opacity-0'
         )}
       >
         {props.iconId && (

@@ -14,8 +14,8 @@ export function SourceCodeButton(props: Props) {
     <Show when={isOpenSource}>
       <a
         class={clsx(
-          'glass-panel flex items-center gap-1 rounded-full! duration-200 ease-out hover:bg-white/10! [&>*]:transition-opacity',
-          props.withDescription ? 'px-1' : 'h-[50px] w-[50px] items-center justify-center'
+          'glass-panel flex items-center gap-1 rounded-full! duration-200 ease-out *:transition-opacity hover:bg-white/10!',
+          props.withDescription ? 'px-1' : 'h-12.5 w-12.5 items-center justify-center'
         )}
         href={env.VITE_REPOSITORY_URL}
         rel="noopener noreferrer"
@@ -25,8 +25,8 @@ export function SourceCodeButton(props: Props) {
           <Icon id="github-logo" />
         </Show>
         <Show when={props.withDescription}>
-          <div class="flex h-[46px] w-[46px] items-center justify-center">
-            <Icon id="github-logo" class="h-[30px] w-[30px]" />
+          <div class="flex h-11.5 w-11.5 items-center justify-center">
+            <Icon id="github-logo" class="h-7.5 w-7.5" />
           </div>
           <span class="mr-3 text-sm">Source code</span>
         </Show>

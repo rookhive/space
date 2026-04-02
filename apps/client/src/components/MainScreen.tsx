@@ -23,7 +23,7 @@ export function MainScreen(props: Props) {
           setIsLoading(true);
         }}
       >
-        <Button class="w-[240px]" iconId="add" variant="pulse" isLoading={isLoading()}>
+        <Button class="w-60" iconId="add" variant="pulse" isLoading={isLoading()}>
           Create room
         </Button>
       </A>
@@ -34,7 +34,7 @@ export function MainScreen(props: Props) {
     <div class="flex-col items-center justify-center">
       <div class="mb-6 flex flex-col items-start text-center">
         <span class="text-2xl">Hello,</span>
-        <span class="bg-gradient-to-b from-white to-[#cccccc] bg-clip-text font-bold font-heading text-[52px] text-transparent leading-none">
+        <span class="bg-linear-to-b from-white to-[#cccccc] bg-clip-text font-bold font-heading text-[52px] text-transparent leading-none">
           {props.user.name}
         </span>
       </div>

@@ -22,7 +22,7 @@ export function CopyRoomIDButton() {
   });
 
   function handleRoomIDCopy() {
-    if (isCopied()) return;
+    if (isCopied() || !params.roomId) return;
     navigator.clipboard.writeText(params.roomId).then(() => {
       setIsCopied(true);
       copyTimeoutId = setTimeout(() => setIsCopied(false), 2000);

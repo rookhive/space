@@ -24,7 +24,7 @@ export function Avatar(initialProps: Props) {
     <div
       class={clsx(
         'inline-flex shrink-0 items-center justify-center rounded-full bg-white/15 transition-opacity duration-300',
-        props.size === 's' ? 'h-[19px] w-[19px] outline-2' : 'h-[32px] w-[32px] outline-3'
+        props.size === 's' ? 'h-4.75 w-4.75 outline-2' : 'h-8 w-8 outline-3'
       )}
       style={{ 'outline-color': props.color }}
     >

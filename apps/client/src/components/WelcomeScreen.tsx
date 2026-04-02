@@ -5,7 +5,7 @@ import { SourceCodeButton } from './SourceCodeButton';
 export function WelcomeScreen() {
   return (
     <div class="flex h-screen flex-col items-center justify-center">
-      <div class="-ml-4 mb-4">
+      <div class="mb-4 -ml-4">
         <Logo size="large" />
       </div>
       <p class="mt-4">Here you can talk, watch, and.. float around</p>

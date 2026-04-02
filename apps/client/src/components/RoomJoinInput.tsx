@@ -19,7 +19,7 @@ export function RoomJoinInput() {
   }
 
   return (
-    <div class="w-[240px]">
+    <div class="w-60">
       <Input
         iconId="in"
         value={roomId()}

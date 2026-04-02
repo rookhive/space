@@ -90,7 +90,7 @@ export function VideoRoomGreeting(props: Props) {
               )}
             </For>
           </div>
-          <Button class="w-[300px] self-start" variant="pulse" onClick={props.onClose}>
+          <Button class="w-75 self-start" variant="pulse" onClick={props.onClose}>
             Got it!
           </Button>
         </div>

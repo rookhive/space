@@ -13,7 +13,7 @@ export function MuteButton(props: Props) {
     <button
       type="button"
       class={clsx(
-        'after:-translate-x-1/2 after:-translate-y-1/2 relative inline-flex h-[50px] w-[50px] cursor-pointer items-center justify-center duration-300 after:absolute after:top-1/2 after:left-1/2 after:h-[3px] after:w-0 after:origin-center after:rotate-45 after:rounded-xs after:bg-current after:shadow after:transition-all after:content-[""]',
+        'relative inline-flex h-12.5 w-12.5 cursor-pointer items-center justify-center duration-300 after:absolute after:top-1/2 after:left-1/2 after:h-0.75 after:w-0 after:origin-center after:-translate-x-1/2 after:-translate-y-1/2 after:rotate-45 after:rounded-xs after:bg-current after:shadow after:transition-all after:content-[""]',
         props.isMuted && 'after:w-[calc(80%)]',
         props.isDisabled && 'cursor-default'
       )}

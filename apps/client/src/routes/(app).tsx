@@ -18,7 +18,7 @@ export default function AppLayout(props: RouteSectionProps) {
     <UserContext.Provider value={() => user()!}>
       <Title>SPACE</Title>
       <div class="flex h-screen w-full flex-col">
-        <header class="pointer-events-none fixed top-0 right-0 left-0 z-2 flex h-[82px] w-full items-center p-4">
+        <header class="pointer-events-none fixed top-0 right-0 left-0 z-2 flex h-20.5 w-full items-center p-4">
           <Logo />
           <Show when={user() && (!params.roomId || params.roomId === 'new')}>
             <div class="pointer-events-auto ml-auto flex items-center gap-5">

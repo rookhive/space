@@ -38,12 +38,12 @@ export function ChatWithFreshMessages(props: Props) {
   };
 
   return (
-    <div class="flex min-h-0 w-full min-w-0 max-w-[800px] grow flex-col">
+    <div class="flex min-h-0 w-full min-w-0 max-w-200 grow flex-col">
       <div class="flex grow flex-col overflow-hidden pb-3">
         {staleMessagesCount() > 0 && (
           <div
             class={clsx(
-              "before:mr-2 before:ml-[8px] before:inline-block before:h-[8px] before:w-[8px] before:rounded-full before:bg-[var(--color-brand-light)] before:content-['']",
+              "before:mr-2 before:ml-2 before:inline-block before:h-2 before:w-2 before:rounded-full before:bg-brand-light before:content-['']",
               freshMessages().length > 0 && 'my-2'
             )}
           >

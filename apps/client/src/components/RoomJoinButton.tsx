@@ -47,13 +47,13 @@ export function RoomJoinButton(props: Props) {
   return (
     <div class="relative">
       {error() && (
-        <div class="absolute right-0 bottom-[60px] max-w-full break-words text-[var(--color-brand-light)] first-letter:capitalize">
+        <div class="wrap-break-words absolute right-0 bottom-15 max-w-full text-brand-light first-letter:capitalize">
           {error()}
         </div>
       )}
       <Button
         type="button"
-        class="w-[220px]"
+        class="w-55"
         iconId={props.isRoomCreating ? 'right' : 'in'}
         iconPosition="end"
         variant="pulse"

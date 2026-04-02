@@ -7,7 +7,7 @@ export function UsersOnline() {
     <div class="flex grow justify-end gap-4 self-stretch overflow-hidden px-5">
       <For each={roomStore.state.users}>
         {(user) => (
-          <div class="flex min-w-0 max-w-[200px] shrink grow basis-0 items-center gap-2">
+          <div class="flex min-w-0 max-w-50 shrink grow basis-0 items-center gap-2">
             <Avatar
               size="m"
               color={`#${user.color.toString(16).padStart(6, '0')}`}

@@ -12,7 +12,7 @@ export function ChatMessage(props: Props) {
   const [time] = new Date(timestamp).toTimeString().split(' ');
 
   const renderedTime = (
-    <span class="mt-[5px] translate-x-[0px] self-start whitespace-nowrap font-thin text-xs opacity-70">
+    <span class="mt-1.25 translate-x-0 self-start whitespace-nowrap font-thin text-xs opacity-70">
       {time}
     </span>
   );
@@ -29,12 +29,12 @@ export function ChatMessage(props: Props) {
   const { userName, userColor, userAvatarUrl } = props.message;
 
   return (
-    <div class={clsx('my-[1px] flex min-w-0 gap-2 px-2', props.isFirstMessage && 'mt-auto')}>
-      <div class="flex items-center gap-[6px] self-start">
+    <div class={clsx('my-px flex min-w-0 gap-2 px-2', props.isFirstMessage && 'mt-auto')}>
+      <div class="flex items-center gap-1.5 self-start">
         <Avatar size="s" color={userColor} name={userName} url={userAvatarUrl} />
         <span style={{ color: userColor }}>{userName}</span>
       </div>
-      <div class="min-w-0 shrink break-words">{message}</div>
+      <div class="wrap-break-words min-w-0 shrink">{message}</div>
       {renderedTime}
     </div>
   );

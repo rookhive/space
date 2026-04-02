@@ -23,7 +23,7 @@ export function ColorPicker() {
             >
               <span
                 class={clsx(
-                  'block h-[24px] w-[24px] rounded-full shadow-[inset_-2px_-2px_8px_rgba(0,0,0,0.5)] transition-all duration-300 ease-in-out',
+                  'block h-6 w-6 rounded-full shadow-[inset_-2px_-2px_8px_rgba(0,0,0,0.5)] transition-all duration-300 ease-in-out',
                   isSelected() && 'scale-115'
                 )}
                 style={{
