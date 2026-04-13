@@ -1,7 +1,7 @@
 ARG CLIENT_IMAGE=space-client:latest
 FROM ${CLIENT_IMAGE} AS client
 
-FROM nginx:1.28.0-alpine-slim AS base
+FROM nginx:1.29.8-slim AS base
 RUN mkdir -p /var/www/client/static
 COPY --from=client /app/.output/public/_build /var/www/client/static
 RUN rm /etc/nginx/conf.d/default.conf
