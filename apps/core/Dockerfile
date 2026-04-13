@@ -5,17 +5,16 @@ ARG TURBO_VERSION=latest
 
 FROM node:${NODE_VERSION}-slim AS base
 ENV PNPM_HOME=/home/node/.local/share/pnpm
-ENV PATH=$PNPM_HOME:$PATH
+ENV PATH=$PNPM_HOME/bin:$PATH
 RUN corepack enable && corepack prepare pnpm@${PNPM_VERSION} --activate
 RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates && rm -rf /var/lib/apt/lists/*
-RUN pnpm add -g turbo@${TURBO_VERSION}
 
 
 FROM base AS preparer
 WORKDIR /workspace
 COPY . .
-RUN turbo telemetry disable
-RUN turbo prune --docker space-core
+RUN pnpm dlx turbo@${TURBO_VERSION} telemetry disable
+RUN pnpm dlx turbo@${TURBO_VERSION} prune --docker space-core
 
 
 FROM base AS installer
