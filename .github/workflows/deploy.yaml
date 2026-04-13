@@ -85,29 +85,15 @@ jobs:
           }
 
       - name: Upload images to VPS and restart the containers
-        env:
-          SSH_KEY: ${{ secrets.DEPLOY_SSH_KEY }}
         run: |
           $ErrorActionPreference = 'Stop'
 
-          $deployUser = '${{ secrets.DEPLOY_USER }}'
-          $deployHost = '${{ secrets.DEPLOY_HOST }}'
+          $deployTarget = 'space-app-vps'
 
-          $sshDir = Join-Path $env:RUNNER_TEMP ("ssh_" + [guid]::NewGuid().ToString("N"))
-          $null = New-Item -ItemType Directory -Path $sshDir -Force
-
-          $keyPath = Join-Path $sshDir 'id_rsa'
-          $sshKey = $env:SSH_KEY -replace "`r",""
-          [System.IO.File]::WriteAllText($keyPath, $sshKey, [System.Text.Encoding]::ASCII)
-
-          icacls $keyPath /inheritance:r /grant:r "$($env:USERNAME):(R)" > $null
-
-          $scpOptions = @('-i', $keyPath, '-o', 'StrictHostKeyChecking=no')
-
-          ssh @scpOptions "$deployUser@$deployHost" 'mkdir -p /opt/space'
+          ssh $deployTarget 'mkdir -p /opt/space'
 
           foreach ($file in @('compose.yaml', '.env')) {
-            scp @scpOptions $file "$deployUser@${deployHost}:/opt/space/$file"
+            scp $file "${deployTarget}:/opt/space/$file"
           }
 
           $archives = @(
@@ -118,7 +104,7 @@ jobs:
           )
 
           foreach ($archive in $archives) {
-            scp @scpOptions $archive "$deployUser@${deployHost}:/tmp/"
+            scp $archive "${deployTarget}:/tmp/"
           }
 
           $remoteScript = @'
@@ -144,7 +130,7 @@ jobs:
           [System.IO.File]::WriteAllText($localScriptPath, $remoteScript, [System.Text.UTF8Encoding]::new($false))
 
           $remoteScriptPath = "/tmp/space-deploy.sh"
-          scp @scpOptions $localScriptPath "$deployUser@${deployHost}:$remoteScriptPath"
+          scp $localScriptPath "${deployTarget}:$remoteScriptPath"
 
-          ssh @scpOptions "$deployUser@${deployHost}" "bash $remoteScriptPath && rm -f $remoteScriptPath"
+          ssh $deployTarget "bash $remoteScriptPath && rm -f $remoteScriptPath"
           Remove-Item $localScriptPath -Force
