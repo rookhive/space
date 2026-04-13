@@ -16,7 +16,7 @@ jobs:
 
       - name: Write build environment variables
         run: |
-          @'
+          $envFile = @'
           NODE_ENV=production
           NODE_VERSION=24
           PNPM_VERSION=10.33.0
@@ -47,7 +47,10 @@ jobs:
           VITE_CORE_URL=${{ secrets.CORE_URL }}
           VITE_SFU_URL=${{ secrets.SFU_URL }}
           VITE_REPOSITORY_URL=https://github.com/rookhive/space
-          '@ | Set-Content -Path .env -Encoding utf8
+          '@
+
+          $envFile = $envFile -replace "`r`n", "`n"
+          [System.IO.File]::WriteAllText('.env', $envFile, [System.Text.UTF8Encoding]::new($false))
 
       - name: Build images
         run: make build

@@ -4,6 +4,7 @@ ARG TURBO_VERSION=latest
 
 
 FROM node:${NODE_VERSION}-slim AS base
+ARG PNPM_VERSION
 ENV PNPM_HOME=/home/node/.local/share/pnpm
 ENV PATH=$PNPM_HOME/bin:$PATH
 RUN corepack enable && corepack prepare pnpm@${PNPM_VERSION} --activate
@@ -40,8 +41,7 @@ RUN pnpm deploy --filter space-client --prod --legacy /prod
 
 FROM node:${NODE_VERSION}-slim AS runner
 WORKDIR /app
-RUN corepack enable && corepack prepare pnpm@${PNPM_VERSION} --activate
 COPY --from=builder /prod /app
 ARG PORT=3333
 EXPOSE ${PORT}
-CMD ["pnpm", "start"]
+CMD ["node", ".output/server/index.mjs"]

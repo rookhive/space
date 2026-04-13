@@ -8,5 +8,5 @@ RUN rm /etc/nginx/conf.d/default.conf
 COPY nginx.conf /etc/nginx/templates/nginx.template
 COPY nginx.bootstrap.conf /etc/nginx/templates/nginx.bootstrap.template
 COPY run.sh /run.sh
-RUN chmod +x /run.sh
+RUN sed -i 's/\r$//' /run.sh && chmod +x /run.sh
 CMD ["/run.sh"]
