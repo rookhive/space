@@ -19,8 +19,8 @@ jobs:
           @'
           NODE_ENV=production
           NODE_VERSION=24
-          PNPM_VERSION=10.17.1
-          TURBO_VERSION=2.5.8
+          PNPM_VERSION=10.33.0
+          TURBO_VERSION=2.9.3
           CLIENT_HOST=0.0.0.0
           CLIENT_PORT=3333
           CORE_HOST=0.0.0.0
